@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.employee.EmployeePOJO;
+import com.employee.EmployeeDAO;
 
 public class EmployeeServlet extends HttpServlet {
 
@@ -15,9 +16,9 @@ public class EmployeeServlet extends HttpServlet {
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response)
             throws ServletException, IOException {
-
+        List<EmployeePOJO> empList = EmployeeDAO.getAllEmployee();
         RequestDispatcher rd = request.getRequestDispatcher("EmployeeList.jsp");
-        request.setAttribute("empList", employeeList);
+        request.setAttribute("empList", empList);
         rd.forward(request, response);
 
     }
@@ -39,7 +40,8 @@ public class EmployeeServlet extends HttpServlet {
 
         if (empId == null || empName == null || empRole == null) {
             message = "Couldn't add employee!";
-            out.println("<h3>" + message + "</h3>");
+            out.println("<div align=\"left\"><a href=\"/EmployeeApp/\">Home</a></div>");
+            out.println("<h3 align=\"center\">" + message + "</h3>");
             return;
         }
         EmployeePOJO employee = new EmployeePOJO();
@@ -47,10 +49,12 @@ public class EmployeeServlet extends HttpServlet {
         employee.setName(empName);
         employee.setRole(empRole);
 
-        employeeList.add(employee);
+        //employeeList.add(employee);
+        EmployeeDAO.addEmployee(employee);
 
         message = "Employee added successfully!!!";
-        out.println("<h3>" + message + "</h3>");
+        out.println("<div align=\"left\"><a href=\"/EmployeeApp/\">Home</a></div>");
+        out.println("<h3 align=\"center\">" + message + "</h3>");
 
     }
 }
